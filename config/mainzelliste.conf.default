@@ -63,24 +63,23 @@ db.password = mainzelliste
 
 field.firstname.type = PlainTextField
 field.lastname.type = PlainTextField
-field.geburtsname.type = PlainTextField
-field.geburtstag.type = IntegerField 
-field.geburtsmonat.type = IntegerField
-field.geburtsjahr.type = IntegerField
-field.plz.type = PlainTextField
-field.ort.type = PlainTextField
-field.test.type = PlainTextField
+field.birthdayname.type = PlainTextField
+field.dayofbirth.type = IntegerField 
+field.monthofbirth.type = IntegerField
+field.yearofbirth.type = IntegerField
+field.postalcode.type = PlainTextField
+field.city.type = PlainTextField
 
 # To store the data in hashed form (control numbers) use the type ControlNumberField
 
 # field.firstname.type = ControlNumberField
 # field.lastname.type = ControlNumberField
-# field.geburtsname.type = ControlNumberField
-# field.geburtstag.type = ControlNumberField
-# field.geburtsmonat.type = ControlNumberField
-# field.geburtsjahr.type = ControlNumberField
-# field.plz.type = ControlNumberField
-# field.ort.type = ControlNumberField
+# field.birthdayname.type = ControlNumberField
+# field.dayofbirth.type = ControlNumberField
+# field.monthofbirth.type = ControlNumberField
+# field.yearofbirth.type = ControlNumberField
+# field.postalcode.type = ControlNumberField
+# field.city.type = ControlNumberField
 
 
 # Server-side validation
@@ -88,16 +87,16 @@ field.test.type = PlainTextField
 # validator.field.{fieldname}.required: Whether a field must not be empty
 validator.field.firstname.required = true
 validator.field.lastname.required = true
-validator.field.geburtstag.required = true
-validator.field.geburtsmonat.required = true
-validator.field.geburtsjahr.required = true
+validator.field.dayofbirth.required = true
+validator.field.monthofbirth.required = true
+validator.field.yearofbirth.required = true
 
 # validator.field.{fieldname}.format: Regular expresssion which a field must adhere to.
 
 # Default: letters, dots, underscores, apostrophes, spaces; at least one letter.
 validator.field.firstname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
 validator.field.lastname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
-validator.field.geburtsname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
+validator.field.birthdayname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
 
 # Date validation:
 # validator.date.{i}.fields defines a list of fields, separated by commas.
@@ -108,7 +107,7 @@ validator.field.geburtsname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄ�
 # Multiple dates can be specified by supplying multiple definitions with consecutive
 # numbers as {i}
 
-validator.date.0.fields = geburtstag, geburtsmonat, geburtsjahr
+validator.date.0.fields = dayofbirth, monthofbirth, yearofbirth
 validator.date.0.format = ddMMyyyy
 
 
@@ -121,7 +120,7 @@ validator.date.0.format = ddMMyyyy
 #
 # An exchange group is defined by exchangeGroup.{id} = {fieldlist}, where id is a sequential number
 # and fieldlist a comma-separated list of field names
-exchangeGroup.0 = firstname, lastname, geburtsname
+exchangeGroup.0 = firstname, lastname, birthdayname
 
 # Field transformations
 #
@@ -136,34 +135,34 @@ exchangeGroup.0 = firstname, lastname, geburtsname
 
 field.firstname.transformers = StringNormalizer, FirstNameDecomposer
 field.lastname.transformers = StringNormalizer, GermanLastNameDecomposer
-field.geburtsname.transformers = StringNormalizer, GermanLastNameDecomposer
+field.birthdayname.transformers = StringNormalizer, GermanLastNameDecomposer
 
 # field comparators
 field.firstname.comparator = NGramComparator
 field.lastname.comparator = NGramComparator
-field.geburtsname.comparator = NGramComparator
+field.birthdayname.comparator = NGramComparator
 
-field.geburtstag.comparator = BinaryFieldComparator
-field.geburtsmonat.comparator = BinaryFieldComparator
-field.geburtsjahr.comparator = BinaryFieldComparator
+field.dayofbirth.comparator = BinaryFieldComparator
+field.monthofbirth.comparator = BinaryFieldComparator
+field.yearofbirth.comparator = BinaryFieldComparator
 
-field.plz.comparator = BinaryFieldComparator
-field.ort.comparator = NGramComparator
+field.postalcode.comparator = BinaryFieldComparator
+field.city.comparator = NGramComparator
 
 # Use DiceField comparator instead of NGramComparator to apply EpilLink algorithm to hashed fields
 
 # field.firstname.comparator = DiceFieldComparator
 
 
-blockingFields.0 geburtstag, geburtsmonat
-blockingFields.0 geburtstag, geburtjahr
-blockingFields.0 geburtsmonat, geburtsjahr
+blockingFields.0 dayofbirth, monthofbirth
+blockingFields.0 dayofbirth, geburtjahr
+blockingFields.0 monthofbirth, yearofbirth
 
 
 
 # Matcher definition
 # Property matcher defines the class name of the matcher to use, which must be a subclass
-# of Matcher. Currently only EpilinkMatcher and NullMatcher are supported.
+# of Matcher. Currently only EpilinkMatcher and NullMatcher are suppcityed.
 # Null matcher is used to skip the step of record linkage
 matcher = EpilinkMatcher
 # matcher = NullMatcher
@@ -176,17 +175,17 @@ matcher = EpilinkMatcher
 # frequency of "month" is 1 / 12).
 matcher.epilink.firstname.frequency = 0.000235
 matcher.epilink.lastname.frequency = 0.0000271
-matcher.epilink.geburtsname.frequency = 0.0000271
+matcher.epilink.birthdayname.frequency = 0.0000271
 
 # 1 / 30 (approximate average number of days in a month)
-matcher.epilink.geburtstag.frequency = 0.0333
+matcher.epilink.dayofbirth.frequency = 0.0333
 # 1 / 12
-matcher.epilink.geburtsmonat.frequency = 0.0833
+matcher.epilink.monthofbirth.frequency = 0.0833
 # example value: birth years for an age range of 35 years (40 - 75).
-matcher.epilink.geburtsjahr.frequency = 0.0286
+matcher.epilink.yearofbirth.frequency = 0.0286
 
-matcher.epilink.plz.frequency = 0.01
-matcher.epilink.ort.frequency = 0.01
+matcher.epilink.postalcode.frequency = 0.01
+matcher.epilink.city.frequency = 0.01
 
 # matcher.epilink.{fieldname}.error_rate defines the assumed error_rate for
 # field {fieldname} (1 - m-probability)
@@ -194,12 +193,12 @@ matcher.epilink.ort.frequency = 0.01
 # The supplied number stem from the evaluation of a German cancer registry
 matcher.epilink.firstname.errorRate = 0.01
 matcher.epilink.lastname.errorRate = 0.008
-matcher.epilink.geburtsname.errorRate = 0.008
-matcher.epilink.geburtstag.errorRate = 0.005
-matcher.epilink.geburtsmonat.errorRate = 0.002
-matcher.epilink.geburtsjahr.errorRate = 0.004
-matcher.epilink.plz.errorRate = 0.04
-matcher.epilink.ort.errorRate = 0.04
+matcher.epilink.birthdayname.errorRate = 0.008
+matcher.epilink.dayofbirth.errorRate = 0.005
+matcher.epilink.monthofbirth.errorRate = 0.002
+matcher.epilink.yearofbirth.errorRate = 0.004
+matcher.epilink.postalcode.errorRate = 0.04
+matcher.epilink.city.errorRate = 0.04
 
 
 
@@ -227,7 +226,7 @@ matcher.epilink.threshold_non_match = 0.6
 #
 #idgenerators = pid, intid
 
-# For externally generated id types (imported from external systems) use ExternalIDGenerator
+# For externally generated id types (impcityed from external systems) use ExternalIDGenerator
 #idgenerators = pid, intid, extid, elasticid
 idgenerators = pid, elasticid
 
@@ -252,7 +251,7 @@ idgenerator.elasticid = ElasticIDGenerator
 idgenerator.elasticid.vocabulary = 123456789ACDEFGHJKMNPQURTUVWXYZ
 idgenerator.elasticid.length = 16
 
-# For externally generated id types (imported from external systems) use ExternalIDGenerator
+# For externally generated id types (impcityed from external systems) use ExternalIDGenerator
 idgenerator.extid = ExternalIDGenerator
 
 # Output of result
