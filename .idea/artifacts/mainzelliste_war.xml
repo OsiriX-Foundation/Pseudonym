@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mainzelliste:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>mainzelliste</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="mainzelliste-1.8.0.war">
+      <element id="artifact" artifact-name="mainzelliste:war exploded" />
+    </root>
+  </artifact>
+</component>
