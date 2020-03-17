@@ -155,7 +155,7 @@ field.city.comparator = NGramComparator
 
 
 blockingFields.0 dayofbirth, monthofbirth
-blockingFields.0 dayofbirth, geburtjahr
+blockingFields.0 dayofbirth, yearofbirth
 blockingFields.0 monthofbirth, yearofbirth
 
 
