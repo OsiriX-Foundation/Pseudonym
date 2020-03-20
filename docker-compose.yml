@@ -21,7 +21,7 @@ services:
       - db
   nodeenvironement:
     container_name: callbacklistener
-    image: node:dev
+    image: callbacklistener-img
     ports:
       - 8887:8887
   
