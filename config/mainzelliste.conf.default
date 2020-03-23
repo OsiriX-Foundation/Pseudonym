@@ -44,10 +44,10 @@ db.password = mainzelliste
 #log.filename = /var/log/tomcat6/mainzelliste.log
 #log.level = DEBUG
 
-#performance tuning soundex-like blocking
 
-#blocking.soundex.type = Soundex
-#blocking.soundex.fields = firstname, lastname
+
+
+
 
 # Field definitions
 #
@@ -60,67 +60,31 @@ db.password = mainzelliste
 # be provided in the createPatient Token
 
 # In order to deactivate fields temporarily, it is sufficient to comment out the field definition.
+field.patientID.type = PlainTextField
+field.patientName.type = PlainTextField
+field.patientBirthDate.type = PlainTextField
+field.patientBirthTime.type = PlainTextField 
+field.patientAge.type = PlainTextField
+field.patientAddress.type = PlainTextField
 
-field.firstname.type = PlainTextField
-field.lastname.type = PlainTextField
-field.birthdayname.type = PlainTextField
-field.dayofbirth.type = IntegerField 
-field.monthofbirth.type = IntegerField
-field.yearofbirth.type = IntegerField
-field.postalcode.type = PlainTextField
-field.city.type = PlainTextField
-
-# To store the data in hashed form (control numbers) use the type ControlNumberField
-
-# field.firstname.type = ControlNumberField
-# field.lastname.type = ControlNumberField
-# field.birthdayname.type = ControlNumberField
-# field.dayofbirth.type = ControlNumberField
-# field.monthofbirth.type = ControlNumberField
-# field.yearofbirth.type = ControlNumberField
-# field.postalcode.type = ControlNumberField
-# field.city.type = ControlNumberField
 
 
 # Server-side validation
 
 # validator.field.{fieldname}.required: Whether a field must not be empty
-validator.field.firstname.required = true
-validator.field.lastname.required = true
-validator.field.dayofbirth.required = true
-validator.field.monthofbirth.required = true
-validator.field.yearofbirth.required = true
+validator.field.patientID.required = true
 
 # validator.field.{fieldname}.format: Regular expresssion which a field must adhere to.
 
 # Default: letters, dots, underscores, apostrophes, spaces; at least one letter.
-validator.field.firstname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
-validator.field.lastname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
-validator.field.birthdayname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
-
-# Date validation:
-# validator.date.{i}.fields defines a list of fields, separated by commas.
-# The date string is formed by concatenation of these fields.
-# validator.date.{i}.format: A format definition (see java.text.SimpleDateFormat) by
-# which the date string is interpreted. Validation checks if the parsed date is valid.
-# Set fields which form the date and the format (when concatenating the fields).
-# Multiple dates can be specified by supplying multiple definitions with consecutive
-# numbers as {i}
-
-validator.date.0.fields = dayofbirth, monthofbirth, yearofbirth
-validator.date.0.format = ddMMyyyy
+#validator.field.firstname.format = [A-Za-zäÄöÖüÜß\\.\\-' ]*[A-Za-zäÄöÖüÜß]+[A-Za-zäÄöÖüÜß\\.\\-' ]*
+validator.field.patientName.format = .*
 
 
 
-# Exchange groups
-#
-# An exchange group denotes a set of fields whose values are considered interchangeable.
-# The matcher (currently only EpilinkMatcher) compares the fields in each exchange group to
-# all of its permutations and uses the best matching combination for final decision.
-#
-# An exchange group is defined by exchangeGroup.{id} = {fieldlist}, where id is a sequential number
-# and fieldlist a comma-separated list of field names
-exchangeGroup.0 = firstname, lastname, birthdayname
+
+
+
 
 # Field transformations
 #
@@ -133,30 +97,19 @@ exchangeGroup.0 = firstname, lastname, birthdayname
 # Every subsequent transformer is applied to the output of its predecessor; i.e. its type parameter IN
 # must match type parameter OUT of the preceding transformer.
 
-field.firstname.transformers = StringNormalizer, FirstNameDecomposer
-field.lastname.transformers = StringNormalizer, GermanLastNameDecomposer
-field.birthdayname.transformers = StringNormalizer, GermanLastNameDecomposer
+#field.firstname.transformers = StringNormalizer, FirstNameDecomposer
+#field.lastname.transformers = StringNormalizer, GermanLastNameDecomposer
 
 # field comparators
-field.firstname.comparator = NGramComparator
-field.lastname.comparator = NGramComparator
-field.birthdayname.comparator = NGramComparator
+field.patientName.comparator = NGramComparator
+field.patientAddress.comparator = NGramComparator
+field.patientAge.comparator = NGramComparator
 
-field.dayofbirth.comparator = BinaryFieldComparator
-field.monthofbirth.comparator = BinaryFieldComparator
-field.yearofbirth.comparator = BinaryFieldComparator
-
-field.postalcode.comparator = BinaryFieldComparator
-field.city.comparator = NGramComparator
-
-# Use DiceField comparator instead of NGramComparator to apply EpilLink algorithm to hashed fields
-
-# field.firstname.comparator = DiceFieldComparator
+field.patientID.comparator = BinaryFieldComparator
+field.patientBirthDate.comparator = BinaryFieldComparator
+field.patientBirthTime.comparator = BinaryFieldComparator
 
 
-blockingFields.0 dayofbirth, monthofbirth
-blockingFields.0 dayofbirth, yearofbirth
-blockingFields.0 monthofbirth, yearofbirth
 
 
 
@@ -164,55 +117,11 @@ blockingFields.0 monthofbirth, yearofbirth
 # Property matcher defines the class name of the matcher to use, which must be a subclass
 # of Matcher. Currently only EpilinkMatcher and NullMatcher are suppcityed.
 # Null matcher is used to skip the step of record linkage
-matcher = EpilinkMatcher
-# matcher = NullMatcher
-
-# Config for Epilink Matcher
-#
-# matcher.epilink.{fieldname}.frequency: Defines the assumed mean frequency of values
-# for field {fieldname}. This corresponds to the u-probability in the Fellegi-Sunter-Model
-# and can be estimated by the reciprocal of the number of distinct values (i.e. the
-# frequency of "month" is 1 / 12).
-matcher.epilink.firstname.frequency = 0.000235
-matcher.epilink.lastname.frequency = 0.0000271
-matcher.epilink.birthdayname.frequency = 0.0000271
-
-# 1 / 30 (approximate average number of days in a month)
-matcher.epilink.dayofbirth.frequency = 0.0333
-# 1 / 12
-matcher.epilink.monthofbirth.frequency = 0.0833
-# example value: birth years for an age range of 35 years (40 - 75).
-matcher.epilink.yearofbirth.frequency = 0.0286
-
-matcher.epilink.postalcode.frequency = 0.01
-matcher.epilink.city.frequency = 0.01
-
-# matcher.epilink.{fieldname}.error_rate defines the assumed error_rate for
-# field {fieldname} (1 - m-probability)
-#
-# The supplied number stem from the evaluation of a German cancer registry
-matcher.epilink.firstname.errorRate = 0.01
-matcher.epilink.lastname.errorRate = 0.008
-matcher.epilink.birthdayname.errorRate = 0.008
-matcher.epilink.dayofbirth.errorRate = 0.005
-matcher.epilink.monthofbirth.errorRate = 0.002
-matcher.epilink.yearofbirth.errorRate = 0.004
-matcher.epilink.postalcode.errorRate = 0.04
-matcher.epilink.city.errorRate = 0.04
+# matcher = EpilinkMatcher
+matcher = NullMatcher
 
 
 
-# matcher.epilink.threshold.match: Defines the minimum weight (in the interval [0,1])
-# for which a pair of records is considered a definite match.
-#
-# matcher.epilink.threshold_non_match: Defines the weight (in the interval [0,1])
-# below which a pair of records is considered a definite non-match. Must be less than or equal
-# to matcher.epilink.threshold_match.
-#
-# Record pairs with a weight w with threshold_non_match <= w < threshold_match are
-# considered possible matches and lead to a tentative PID.
-matcher.epilink.threshold_match = 0.95
-matcher.epilink.threshold_non_match = 0.6
 
 
 # ID-Generators
@@ -254,6 +163,10 @@ idgenerator.elasticid.length = 16
 # For externally generated id types (impcityed from external systems) use ExternalIDGenerator
 idgenerator.extid = ExternalIDGenerator
 
+
+
+
+
 # Output of result
 
 # Whether to show a result page (defaults to true)
@@ -285,12 +198,21 @@ result.printIdat = false
 #
 # readAllPatientIdTypes: allows to read all IdTypes of a patient
 # readAllPatientIds: allows to read all Ids of a patient
-#
+
+
+
+
+
 
 
 # A passphrase used for authentication
 servers.0.apiKey = 
 servers.0.permissions = createSession;showSessionIds;createToken;tt_addPatient;tt_readPatients;tt_editPatient
+
+
+
+
+
 
 
 # Accepted origin addresses (IPv4 and/or IPv6) or address ranges in CIDR notation (IPv4 only)
@@ -316,21 +238,3 @@ callback.allowSelfsigned = false
 # A session will be deleted if not accessed for this amount of time, specified in minutes
 # Default value if not specified: 10
 sessionTimeout = 420
-
-# Operator information of the Mainzelliste operator to display around user forms
-# (defaults to empty/invisible):
-# - Contact: Text to be displayed below all forms
-# - Logo: Path to image to be displayed in the upper right corner. This can either be an absolute path
-#         in the file system, a path within the .war file or a path relative to META-INF/resource
-#         within a .jar file on the class path (e.g. a dependency).
-
-# operator.contact = 
-
-# Logo file: example for absolute path
-# operator.logo = /etc/mainzelliste/logo.png
-
-# Logo file: example for relative path in .war file
-# operator.logo = /WEB-INF/classes/logo.png
-
-# Logo file: example for file in META-INF/resources within a .jar file on the classpath 
-# operator.logo = /logo.png
