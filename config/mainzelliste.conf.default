@@ -65,6 +65,7 @@ field.patientName.type = PlainTextField
 field.patientBirthDate.type = PlainTextField
 field.patientBirthTime.type = PlainTextField 
 field.patientAge.type = PlainTextField
+field.patientSex.type = PlainTextField
 field.patientAddress.type = PlainTextField
 
 
@@ -103,6 +104,7 @@ validator.field.patientName.format = .*
 # field comparators
 field.patientName.comparator = NGramComparator
 field.patientAddress.comparator = NGramComparator
+field.patientSex.comparator = NGramComparator
 field.patientAge.comparator = NGramComparator
 
 field.patientID.comparator = BinaryFieldComparator
