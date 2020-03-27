@@ -9,45 +9,13 @@
 .classpath
 .project
 
-# NetBeans specific
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
-
 # Ignore Maven files
 target/
-release.properties
-pom.xml.releaseBackup
-pom.xml.tag
 *.command
 *.marker
 
-# OS generated files
-.DS_Store
-Thumbs.db
-_*/
-
-# crash file
-hs_err*.log
-
-# Vaadin
-package.json
-package-lock.json
-webpack.config.js
-webpack.generated.js
-tsconfig.json
-node_modules/
-
 #vscode config
 .vscode
-
-.idea
-*.iml
-
 
 
 # Ignore Mainzelliste context descriptor and configuration files, as these
